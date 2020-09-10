@@ -26,9 +26,24 @@ const List = ({ tasks }) => {
     );
   };
 
+  const displayAddNewTaskButton = () => {
+    return (
+      <a className="btn btn-primary" href="/tasks/new">
+        Add New Task
+      </a>
+    )
+  }
+
   return (
     <div className="container">
-      <div className="pt-5">{displayTaskList()}</div>
+      <div className="row">
+        <div className="col-md-10">
+          {displayTaskList()}
+        </div>
+        <div className="col-md-10">
+          {displayAddNewTaskButton()}
+        </div>
+      </div>  
     </div>
   );
 };
