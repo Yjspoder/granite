@@ -30,7 +30,7 @@ const List = ({ tasks }) => {
 
   const displayAddNewTaskButton = () => {
     return (
-      <a className="btn btn-primary" href={Routes.new_task_path}>
+      <a className="btn btn-primary" href={Routes.new_task_path()}>
         Add New Task
       </a>
     )
