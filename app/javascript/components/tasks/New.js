@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as Routes from "../../utils/Routes";
 import API from "../../utils/API";
+import Errors from "../shared/Errors";
 
 class New extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class New extends Component {
     this.state = {
       description: "",
       message: null,
+      errors: [],
     };
   }
 
@@ -28,8 +30,8 @@ class New extends Component {
         }, 1000);
       })
       .catch((error) => {
-        error.text().then((err) => {
-          console.error(err);
+        error.json().then(({ errors }) => {
+          this.setState({ ...this.state, errors });
         });
       });
   };
@@ -64,9 +66,24 @@ class New extends Component {
     );
   }
 
+  displayErrors() {
+    const { errors } = this.state;
+
+    return (
+      <div className="row justify-content-center">
+        {errors.length !== 0 ? (
+          <div className="mt-4">
+            <Errors errors={errors} message="danger" />
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="container">
+        {this.displayErrors()}
         {this.state.message ? (
           <div className="alert alert-success">{this.state.message}</div>
         ) : (
