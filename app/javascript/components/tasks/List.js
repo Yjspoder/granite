@@ -13,9 +13,9 @@ const List = ({ tasks }) => {
               {tasks.map((task, index) => {
                 return (
                   <li key={index}>
-                    Task id: {task.id}
-                    <br />
-                    Task description: {task.description}
+                    <a href={Routes.task_path(task.id)} >
+                      {task.id} {task.description}
+                    </a>
                   </li>
                 );
               })}
@@ -30,7 +30,7 @@ const List = ({ tasks }) => {
 
   const displayAddNewTaskButton = () => {
     return (
-      <a className="btn btn-primary" href={Routes.new_task_path()}>
+      <a className="btn btn-primary" href={Routes.new_task_path}>
         Add New Task
       </a>
     )
