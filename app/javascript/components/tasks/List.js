@@ -1,5 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
+import * as Routes from "../../utils/Routes";
+import API from "../../utils/API";
+
 const List = ({ tasks }) => {
   const displayTaskList = () => {
     return (
@@ -28,7 +30,7 @@ const List = ({ tasks }) => {
 
   const displayAddNewTaskButton = () => {
     return (
-      <a className="btn btn-primary" href="/tasks/new">
+      <a className="btn btn-primary" href={Routes.new_task_path()}>
         Add New Task
       </a>
     )

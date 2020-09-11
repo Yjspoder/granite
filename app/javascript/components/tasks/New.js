@@ -1,44 +1,35 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import * as Routes from "../../utils/Routes";
+import API from "../../utils/API";
 
 class New extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: ""
-    }
+      description: "",
+    };
   }
 
-  handleChange = e => {
+  handleChange = (e) => {
     e.preventDefault();
     this.setState({
-      [e.target.name] : e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  onSubmit = e => {
+  onSubmit = (e) => {
     e.preventDefault();
-    const payload = {
-      task: {
-        description: this.state.description
-      }
-    }
-    fetch("/tasks", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": document.querySelector('[name="csrf-token"]').content,
-      },
-      body: JSON.stringify(payload)
-    }).then(() => (window.location.href = "/tasks")).catch((function (err) {
-      if (error.text) {
-        error.text().then(err => {
-          console.log(err)
-        })
-      }
-    }))
-  }
-  
+    API.postNewTask({ task: { description: this.state.description } })
+      .then(() => {
+        window.location.href = Routes.tasks_path();
+      })
+      .catch((error) => {
+        error.text().then((err) => {
+          console.error(err);
+        });
+      });
+  };
+
   displayAddTaskForm() {
     return (
       <div>
@@ -51,9 +42,14 @@ class New extends Component {
               <h5 className="text-secondary">Description: </h5>
             </label>
             <div className="col-sm-10">
-              <input name="description" type="text" className="form-control" onChange={this.handleChange} />
+              <input
+                name="description"
+                type="text"
+                className="form-control"
+                onChange={this.handleChange}
+              />
             </div>
-            <div className="form-group row pt float-right pr-3" >
+            <div className="form-group row pt float-right pr-3">
               <button className="btn btn-md btn-primary" type="submit">
                 Submit
               </button>
@@ -61,7 +57,7 @@ class New extends Component {
           </div>
         </form>
       </div>
-    )
+    );
   }
 
   render() {
@@ -71,7 +67,7 @@ class New extends Component {
           {this.displayAddTaskForm()}
         </div>
       </div>
-    )
+    );
   }
 }
 
