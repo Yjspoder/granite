@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :load_task, only: [:show, :edit]
+  before_action :load_task, only: [:show, :edit, :update]
   def index
     @tasks = Task.all
   end
@@ -23,6 +23,14 @@ class TasksController < ApplicationController
   end
 
   def edit
+  end
+
+  def update
+    if @task.update(task_params)
+      render status: :ok, json: { notice: "Successfully updated task." }
+    else
+      render status: :unprocessable_entity, json: { errors: @task.errors.full_messages }
+    end
   end
 
   private

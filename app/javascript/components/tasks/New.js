@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as Routes from "../../utils/Routes";
-import API from "../../utils/API";
+import { fetchApi } from "../../utils/API";
 import Errors from "../shared/Errors";
 
 class New extends Component {
@@ -20,20 +20,31 @@ class New extends Component {
     });
   };
 
+  handleError = (response) => {
+    this.setState({ errors: response.messages });
+  };
+
   onSubmit = (e) => {
     e.preventDefault();
-    API.postNewTask({ task: { description: this.state.description } })
-      .then((response) => {
-        this.setState({ message: response.notice });
-        setTimeout(function () {
-          window.location.href = Routes.task_path(response.id);
-        }, 1000);
-      })
-      .catch((error) => {
-        error.json().then(({ errors }) => {
-          this.setState({ ...this.state, errors });
+    const task = {
+      description: this.state.description,
+    };
+    fetchApi({
+      url: Routes.tasks_path(),
+      method: "POST",
+      body: { task },
+      onError: this.handleError,
+      onSuccess: (response) => {
+        this.setState({
+          message: response.messages[0],
         });
-      });
+      },
+      successcallBack: (response) => {
+        setTimeout(function () {
+          window.location.replace(Routes.task_path(response.id));
+        }, 1000);
+      },
+    });
   };
 
   displayAddTaskForm() {
