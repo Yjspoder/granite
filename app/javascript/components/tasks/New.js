@@ -13,11 +13,8 @@ class New extends Component {
     };
   }
 
-  handleChange = (e) => {
-    e.preventDefault();
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+  handleChange = ({target: {name, value}}) => {
+    this.setState({ name: value });
   };
 
   handleError = (response) => {

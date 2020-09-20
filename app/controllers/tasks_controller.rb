@@ -33,6 +33,14 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    if @task.destroy
+      render status: :ok, json: { notice: "Successfully deleted Task." }
+    else
+      render status: :unprocessable_entity, json: { errors: @task.errors.full_messages }
+    end
+  end
+
   private
   def task_params
     params.require(:task).permit(:description)

@@ -21,12 +21,12 @@ class Edit extends Component {
     });
   };
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = ({ preventDefault }) => {
+    preventDefault();
     fetchApi({
       url: Routes.task_path(this.props.task.id),
       method: "PUT",
@@ -43,12 +43,11 @@ class Edit extends Component {
 
   displayErrors = () => {
     const { errors } = this.state;
-
     return (
       <div className="row">
         {errors && (
           <div className="mt-4">
-            <Errors errors={errors.errors} message={errors.type} />
+            <Error errors={errors.errors} message={errors.type} />
           </div>
         )}
       </div>
@@ -56,6 +55,7 @@ class Edit extends Component {
   };
 
   displayEditTAskForm() {
+    
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-row">
@@ -73,10 +73,7 @@ class Edit extends Component {
           </div>
         </div>
         <br />
-        <button
-          className="btn btn-md btn-primary"
-          type="submit"
-        >
+        <button className="btn btn-md btn-primary" type="submit">
           Update task
         </button>
       </form>
