@@ -21,7 +21,7 @@ class Show extends Component {
   };
 
   handleDelete = (taskId) => {
-    let taskdelete = confim("Are you sure you want to delete the task?");
+    let taskDelete = confirm("Are you sure you want to delete the task?");
     if (taskDelete) {
       fetchApi({
         url: Routes.task_path(taskId),
@@ -67,7 +67,7 @@ class Show extends Component {
               </a>
               <a
                 className="ml-2 btn btn-sm btn-danger"
-                onClick={this.handleDelete(task.id)}
+                onClick={() => this.handleDelete(task.id)}
               >
                 Delete
               </a>

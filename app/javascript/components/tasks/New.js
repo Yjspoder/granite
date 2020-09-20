@@ -13,8 +13,8 @@ class New extends Component {
     };
   }
 
-  handleChange = ({target: {name, value}}) => {
-    this.setState({ name: value });
+  handleChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
   };
 
   handleError = (response) => {
