@@ -14,7 +14,7 @@ const List = ({ tasks }) => {
                 return (
                   <li key={index}>
                     <a href={Routes.task_path(task.id)} >
-                      {task.id} {task.description}
+                      {task.id}. {task.description}
                     </a>
                   </li>
                 );

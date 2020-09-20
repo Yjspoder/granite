@@ -7,8 +7,12 @@ class Edit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: this.props.task.description,
+      task: {
+        ...this.props.task,
+        description: this.props.task.description,
+      },
       errors: null,
+      message: null,
     };
   }
 
@@ -22,18 +26,25 @@ class Edit extends Component {
   };
 
   handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
+    this.setState({
+      task: {
+        ...this.state.task,
+        [name]: value,
+      },
+    });
   };
 
-  handleSubmit = ({ preventDefault }) => {
-    preventDefault();
+  handleSubmit = (e) => {
+    e.preventDefault();
     fetchApi({
       url: Routes.task_path(this.props.task.id),
-      method: "PUT",
-      body: { description: this.state.description },
+      method: "PATCH",
+      body: { task: this.state.task },
       onError: this.handleError,
       onSuccess: (response) => {
-        console.log(response);
+        this.setState({
+          message: response.message
+        })
       },
       successcallBack: () => {
         window.location.href = Routes.tasks_path();
@@ -54,38 +65,70 @@ class Edit extends Component {
     );
   };
 
-  displayEditTAskForm() {
-    
+  displayEditTaskForm() {
+    console.log(this.props);
+    const { users } = this.props;
+    const { errors, message} = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-row">
-          <div className="form-group col-md-4">
-            <label>Description : </label>
-          </div>
-          <div className="col-sm-10">
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.description}
-              onChange={this.handleChange}
-              name="description"
-            />
-          </div>
+      <div className="col-md-10 mx-auto pt-2">
+        <div className="row">
+          <h3 className="pb-3">Edit Task</h3>
         </div>
-        <br />
-        <button className="btn btn-md btn-primary" type="submit">
-          Update task
-        </button>
-      </form>
+        {this.displayErrors()}
+        {message ? (
+          <div className="alert alert-success">{message}</div>
+        ) : (
+          <form onSubmit={this.handleSubmit}>
+            <div className="form-group row pt-3">
+              <label className="col-sm-2 col-form-label">
+                <h5 className="text-secondary">Description : </h5>
+              </label>
+              <div className="col-sm-10">
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.task.description}
+                  onChange={this.handleChange}
+                  name="description"
+                />
+              </div>
+            </div>
+            <div className="form-group row pt-3">
+              <label htmlFor="name" className="col-sm-2 col-form-label">
+                <h5 className="text-secondary">Assigned to:</h5>
+              </label>
+              <div className="col-sm-10">
+                <select
+                  className="custom-select"
+                  name="user_id"
+                  id="users"
+                  onChange={this.handleChange}
+                >
+                  {users &&
+                    users.map((user) => (
+                      <option value={user.id} key={user.id}>
+                        {user.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
+            <div className="form-group row pt float-right pr-3">
+              <button className="btn btn-md btn-primary" type="submit">
+                Update task
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     );
   }
+
   render() {
     return (
       <>
         <div className="container">
-          <h3 className="py-3">Enter new task details</h3>
-          {this.displayErrors()}
-          {this.displayEditTAskForm()}
+          {this.displayEditTaskForm()}
         </div>
       </>
     );
