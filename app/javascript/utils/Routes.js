@@ -1,3 +1,5 @@
+import { func } from "prop-types";
+
 export function tasks_path() {
   return "/tasks";
 }
@@ -20,4 +22,12 @@ export function users_path() {
 
 export function create_session_path() {
   return "/session";
+}
+
+export function login_path() {
+  return "/session/new";
+}
+
+export function logout_path() {
+  return "/logout";
 }
