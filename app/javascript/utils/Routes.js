@@ -17,3 +17,7 @@ export function edit_task_path(id) {
 export function users_path() {
   return "/users";
 }
+
+export function create_session_path() {
+  return "/session";
+}
